@@ -30,6 +30,5 @@ class boat extends Entity{
 
    
 }
-class Water extends Entity{}
 
 class Waves extends Entity{}
