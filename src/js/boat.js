@@ -1,34 +1,79 @@
 import vector from "./vector";
 import Const from "./const";
 class Entity{
-
-}
-class boat extends Entity{
     constructor(
-        //  عوامل مؤثره
+        AllForce,//كل القوة المؤثره
+        p=1000,//كثافه الماء
+        volume,//حجم
+        m,//كتله
 
     ){
-        //قيم ابتدائيه منستعملها بالفانكشن
-        // اسناد العوامل المؤثره لي فوق هون ولح نستعملها تحت بالقوانين عن طريق this
+        this.g=vector(0,-9.81,0);
+        this.AllForce=vector;
+        this.m=m;//كتله
+        this.volume=volume;
+        this.p=p;
+        this.speed=vector.create(0,0,0);//سرعه القارب
+        this.drag=0.5;//سحب
         this.begin=vector.create(0,0);
-        this.g=0;
+        this.direction=vector.create(0,0,-1);
+        this.Speedangular=0;
+    }
+}
+class Boat extends Entity{
+    constructor(
+        AllForce,//كل القوة المؤثره
+        p=1000,//كثافه الماء
+        volume,//حجم
+        m,//كتله
+
+    ){
+        super(AllForce, p, volume, m);
+    }
+    turn(direction)
+    {
+        this.Speedangular+=0.01*direction;//يمين
+        this.Speedangular-=0.01*direction;
+
+    }
+    Get_Direction()
+    {
+        return this.direction;
+    }
+    Water_resistance()//مقاومة الماء 
+    {
+        const DragForce=this.speed*=vector.multiply(this.drag,this.drag);
+        this.AllForce.add(DragForce);
+    }
+    gravity()//لتوازن القارب
+    {
+        const Gravity=this.g*=vector.multiply(this.m,this.m);
+        this.AllForce.add(Gravity);
+    }
+    Float_application()//تطبيق الطفو
+    {
+        const Force=this.p*this.volume*9.18;
+        const Buoyant_force=vector.create(0,Force,0)/* الطفو على المحور y لفوق*/ 
+        const S= this.speed*=vector.multiply(this.drag,this.drag);/* عنا قوه السحب 0.5 
+        السرعه عطيناها فوق قيمه ابتدائيه وهون حدثناها عل محور x and y 
+        بقوة السحب
+        */
+       this.AllForce.add(Buoyant_force);
+       this.AllForce.add(S);
+       //**قانون نيوتن التاني  a=f/m*/
+       const Acceleration=this.AllForce.divide(this.m,this.m);
+       this.speed.add(Acceleration);
+    }
+    GetSpeed()
+    {
+        return this.speed;
     }
     resetBoat()
     {
        // اعاده القارب لمكانه الابتدائي
        this.begin=vector.create(0,0);
     }
-   // حساب الجاذبيه 
-   calculate()
-   {
-    this.g=vector.create(0,
-        // الجاذبيه المحور y 
-        // القانون هون
-    );
-   }
-    
-
-   
 }
+class Water extends Entity{}
 
 class Waves extends Entity{}
