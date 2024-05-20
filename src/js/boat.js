@@ -54,7 +54,7 @@ class Boat extends Entity{
     Float_application()//تطبيق الطفو
     {
         const Force=this.p*this.volume*9.18;
-        const Buoyant_force=vector.create(0,Force,0)/*same as last, created a 2d Vector but used it as 3d
+        const Buoyant_force=vector.create(0,Force);/*same as last, created a 2d Vector but used it as 3d
          الطفو على المحور y لفوق*/ 
         const S= this.speed*=vector.multiply(this.drag,this.drag);/* عنا قوه السحب 0.5 
         السرعه عطيناها فوق قيمه ابتدائيه وهون حدثناها عل محور x and y 
@@ -76,6 +76,8 @@ class Boat extends Entity{
        this.begin=vector.create(0,0);
     }
 }
+let test = new Boat(120,22,10,100);
+console.log(test.turn(1));
 class Water extends Entity{}
 
 class Waves extends Entity{}
