@@ -23,7 +23,10 @@ var vector = {
       getY: function () {
         return this._y;
       },
-      setAngleXY: function (angle) {
+      ///////////////////////////
+      ///where is the ( Z )???///
+      ///////////////////////////
+      setAngleXY: function (angle) {//using 2d vector
         var length = this.getLength();
         this._x = Math.cos(angle) * length;
         this._y = Math.sin(angle) * length;
@@ -32,13 +35,13 @@ var vector = {
         var length = this.getLength();
         this._x = Math.cos(angleXY) * length;
       },
-      getAngleXY: function () {
+      getAngleXY: function () {//using 2d vector
         return Math.atan(this._y / this._x) || 0;
       },
-      getLength: function () {
+      getLength: function () {//using 2d vector
         return Math.sqrt(this._x * this._x + this._y * this._y);
       },
-      add: function (v2) {
+      add: function (v2) {//using 2d vector
         return vector.create(
           this._x + v2.getX(),
           this._y + v2.getY()
@@ -47,25 +50,25 @@ var vector = {
       multiply: function (val) {
         return vector.create(this._x * val, this._y * val);
       },
-      divide: function (vec) {
+      divide: function (vec) {//using 2d vector
         return vector.create(
           this._x / vec.getX(),
           this._y / vec.getY()
         );
       },
-      addTo: function (v2, time) {
+      addTo: function (v2, time) {//using 2d vector
         this._y += v2.getY() * time;
         this._x += v2.getX() * time;
       },
-      multiplyBy : function (val) {
+      multiplyBy : function (val) {//using 2d vector
         this._x *= val;
         this._y *= val;
       },
-      divideBy: function (val) {
+      divideBy: function (val) {//using 2d vector
         this._x /= val;
         this._y /= val;
       },
-      normalize: function () {
+      normalize: function () {//using 2d vector
         return vector.create(
           this._x / this.getLength() || 0,
           this._y / this.getLength() || 0
