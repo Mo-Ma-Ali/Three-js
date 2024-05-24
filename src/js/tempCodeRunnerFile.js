@@ -130,19 +130,94 @@ class Boat extends Entity {
         this.speed = this.speed.add(Acceleration);
     }
 
+    update() {
+        const acceleration = this.AllForce.divide(this.m);
+        this.speed = this.speed.add(acceleration);
+        this.begin = this.begin.add(this.speed);
+        
+        this.AllForce = vector.create(0, 0, 0);
+    }
+
+    display() {
+        console.log(`Boat position: (${this.begin.getX().toFixed(2)}, ${this.begin.getY().toFixed(2)}, ${this.begin.getZ().toFixed(2)})`);
+    }
+
     getSpeed() {
         return this.speed;
     }
 
     resetBoat() {
         this.begin = vector.create(0, 0, 0);
+        this.speed = vector.create(0, 0, 0);
     }
 }
 
 class Water extends Entity {}
 
-class Waves extends Entity {}
+class Waves extends Entity {
+    constructor(AllForce , m, volume, length = 10, height = 10, width = 10){
+        super(AllForce, m / volume, volume, m); 
+        this.length = length;
+        this.height = height;
+        this.width = width;
+    }
+
+    archimedesCalculation(){
+        const liquidDensity = this.p;
+        const volumeOfTheSubmergedBody = this.length * this.width * this.height;
+        let arcCalc = liquidDensity * 9.81 * volumeOfTheSubmergedBody;
+        return 'Archimedes = '+arcCalc;
+    }
+
+    newtonFirstLaw() {
+        if (this.AllForce.getLength() === 0) {
+            console.log('no force');
+        } else {
+            const acceleration = this.AllForce.divide(this.m);
+            this.speed = this.speed.add(acceleration);
+            console.log(`force`);
+        }
+    }
+
+    newtonSecondLaw() {
+        const acceleration = this.AllForce.divide(this.m);
+        return 'Acceleration = '+acceleration;
+    }
+
+    newtonThirdLaw() {
+        const reactionForce = this.AllForce.multiply(-1);
+        return  'Reaction force = ' +reactionForce;
+    }
+}
+
+
+
 
 // Example usage
 let testBoat = new Boat(vector.create(0, 0, 0), 1000, 10, 100);
 console.log(testBoat.getSpeed());
+
+function simulateStep() {
+    testBoat.gravity(); 
+    testBoat.waterResistance(); 
+    testBoat.floatApplication(); 
+
+    testBoat.update();
+
+    testBoat.display();
+
+}
+for (let i = 0; i < 10; i++) {
+    simulateStep();
+}
+
+
+let wavesObj = new Waves(vector.create(10, 0, 0),15,1000,10,9,10);
+
+// wavesObj.AllForce = vector.create(10, 0, 0);
+
+console.log(wavesObj.archimedesCalculation());
+console.log(wavesObj.newtonFirstLaw());
+console.log(wavesObj.newtonSecondLaw());
+console.log(wavesObj.newtonThirdLaw());
+
